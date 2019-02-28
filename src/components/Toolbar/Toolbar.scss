@@ -1,0 +1,8 @@
+@import "/src/sass/colors.scss";
+
+.Toolbar {
+  font-size: 14px;
+  background-color: $gray-light;
+  display: flex;
+  flex-direction: row;
+}
