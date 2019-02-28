@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
-import Homepage from "../../components/Homepage/Homepage";
+import { Homepage } from "../../pages";
+import { Toolbar } from "../../components";
 
 import "./App.scss";
 
@@ -10,12 +11,13 @@ class App extends Component {
     return (
       <Router>
         <div className="container">
+          <Toolbar />
+
           <Route exact path="/" component={Homepage} />
         </div>
       </Router>
     );
   }
-  ł;
 }
 
 export default App;
