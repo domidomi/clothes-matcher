@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 // import classes from "./Toolbar.scss";
-import "./Toolbar.css";
+import "./Toolbar.scss";
 
 class Toolbar extends Component {
   render() {

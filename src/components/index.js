@@ -1,5 +1,1 @@
-import Toolbar from "./Toolbar/Toolbar";
-
-module.exports = {
-  Toolbar
-};
+export { default as Toolbar } from "./Toolbar/Toolbar";

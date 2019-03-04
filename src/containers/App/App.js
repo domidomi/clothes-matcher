@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { Homepage, Login } from "../../pages";
 import { Toolbar } from "../../components";
 
-import "./App.css";
+import "./App.scss";
 
 class App extends Component {
   render() {
