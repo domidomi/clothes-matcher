@@ -3,21 +3,24 @@ import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import { Homepage, Login } from "../../pages";
+import { Homepage, Login, Logout } from "../../pages";
 import { Toolbar } from "../../components";
 
 import "./App.scss";
 
 class App extends Component {
   render() {
+    const { isLoggedIn } = this.props;
     return (
       <Router>
         <div className="app">
-          <Toolbar />
+          <Toolbar isLoggedIn={isLoggedIn} />
+          {isLoggedIn ? "logged in" : "not logged in"}
           <div className="container">
             <Route exact path="/" component={Homepage} />
+            {isLoggedIn && <Route exact path="/logout" component={Logout} />}
 
-            <Route exact path="/login" component={Login} />
+            {!isLoggedIn && <Route exact path="/login" component={Login} />}
             <Redirect to="/" />
           </div>
         </div>
@@ -31,7 +34,7 @@ App.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  isLoggedIn: state.login.isLoggedIn
+  isLoggedIn: state.authentication.isLoggedIn
 });
 
 export default connect(

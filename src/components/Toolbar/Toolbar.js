@@ -6,6 +6,8 @@ import "./Toolbar.scss";
 
 class Toolbar extends Component {
   render() {
+    const { isLoggedIn } = this.props;
+
     return (
       <div className="toolbar">
         <ul>
@@ -16,20 +18,34 @@ class Toolbar extends Component {
             <li>
               <Link to="/browse">Browse</Link>
             </li>
-            <li>
-              <Link to="/items/my">My items</Link>
-            </li>
-            <li>
-              <Link to="/sets/my">My sets</Link>
-            </li>
+            {isLoggedIn && (
+              <li>
+                <Link to="/items/my">My items</Link>
+              </li>
+            )}
+            {isLoggedIn && (
+              <li>
+                <Link to="/sets/my">My sets</Link>
+              </li>
+            )}
           </div>
+
           <div className="toolbar__links">
-            <li>
-              <Link to="/profile">Profile</Link>
-            </li>
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
+            {!isLoggedIn && (
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
+            )}
+            {isLoggedIn && (
+              <li>
+                <Link to="/profile">Profile</Link>
+              </li>
+            )}
+            {isLoggedIn && (
+              <li>
+                <Link to="/logout">Log out</Link>
+              </li>
+            )}
           </div>
         </ul>
       </div>

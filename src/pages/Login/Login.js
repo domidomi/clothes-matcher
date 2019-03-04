@@ -3,7 +3,10 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import { logIn as logInAction } from "../../actions/loginActions";
+import {
+  logIn as logInAction,
+  logOut as logOutAction
+} from "../../actions/authentication.actions";
 
 class Login extends Component {
   handleSubmit(e) {
@@ -11,7 +14,7 @@ class Login extends Component {
   }
 
   render() {
-    const { logIn, isLoggedIn } = this.props;
+    const { logIn, logOut, isLoggedIn } = this.props;
 
     return (
       <div>
@@ -42,15 +45,17 @@ class Login extends Component {
 
 Login.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
-  logIn: PropTypes.func
+  logIn: PropTypes.func,
+  logOut: PropTypes.func
 };
 
 const mapStateToProps = state => ({
-  isLoggedIn: state.login.isLoggedIn
+  isLoggedIn: state.authentication.isLoggedIn
 });
 
 const mapDispatchToProps = {
-  logIn: logInAction
+  logIn: logInAction,
+  logOut: logOutAction
 };
 
 export default connect(
