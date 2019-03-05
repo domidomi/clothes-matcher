@@ -1,0 +1,29 @@
+import { authenticationConstants as authentication } from "../actions/authentication.actions";
+
+const initialState = {
+  isLoggedIn: false,
+  profile: undefined
+};
+
+const authenticationReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case authentication.LOG_IN:
+      return {
+        ...state,
+        isLoggedIn: true,
+        profile: action.profile
+      };
+
+    case authentication.LOG_OUT:
+      return {
+        ...state,
+        isLoggedIn: false,
+        profile: undefined
+      };
+
+    default:
+      return state;
+  }
+};
+
+export default authenticationReducer;
