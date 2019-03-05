@@ -41,11 +41,15 @@ class Toolbar extends Component {
                 <Link to="/profile">Profile</Link>
               </li>
             )}
-            {isLoggedIn && (
+            {/* {isLoggedIn && (
               <li>
                 <Link to="/logout">Log out</Link>
               </li>
-            )}
+            )} */}
+
+            <li>
+              <Link to="/logout">Log out</Link>
+            </li>
           </div>
         </ul>
       </div>

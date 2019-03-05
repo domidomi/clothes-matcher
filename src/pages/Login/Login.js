@@ -26,7 +26,10 @@ class Login extends Component {
             <input type="password" className="form-control" name="password" />
           </div>
           <div className="form-group">
-            <button className="btn btn-primary" onClick={() => auth.login()}>
+            <button
+              className="btn btn-primary"
+              onClick={() => this.props.auth.login()}
+            >
               Login
             </button>
 

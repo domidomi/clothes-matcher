@@ -3,7 +3,7 @@ const LOG_OUT = "LOG_OUT";
 
 const logIn = profile => ({
   type: LOG_IN,
-  profile: profile
+  // profile: profile
 });
 
 const logOut = () => ({

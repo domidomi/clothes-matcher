@@ -2,7 +2,7 @@ import { alertConstants as alert } from "../_actions/alert.actions";
 
 const initialState = {};
 
-export function alert(state = initialState, action) {
+const alertReducer = (state = initialState, action) => {
   switch (action.type) {
     case alert.SUCCESS:
       return {
@@ -19,4 +19,6 @@ export function alert(state = initialState, action) {
     default:
       return state;
   }
-}
+};
+
+export default alertReducer;
