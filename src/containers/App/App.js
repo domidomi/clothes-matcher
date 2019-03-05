@@ -7,6 +7,8 @@ import { history } from "../../utils/helpers";
 import { Homepage, Login, Logout } from "../../pages";
 import { Toolbar } from "../../components";
 
+import { alertActions as alert } from "../../_actions/alert.actions";
+
 import "./App.scss";
 
 class App extends Component {
@@ -14,7 +16,7 @@ class App extends Component {
     const { dispatch } = this.props;
     history.listen((location, action) => {
       // clear alert on location change
-      dispatch(alertActions.clear());
+      dispatch(alert.clear());
     });
   }
 
