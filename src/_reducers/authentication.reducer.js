@@ -1,4 +1,4 @@
-import { authenticationConstants as authentication } from "../actions/authentication.actions";
+import { authenticationConstants as authentication } from "../_actions/authentication.actions";
 
 const initialState = {
   isLoggedIn: false,

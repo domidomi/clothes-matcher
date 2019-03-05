@@ -1,8 +1,8 @@
 import Auth0 from "auth0-js";
 import AUTH0_CONFIG from "./auth.config";
 
-import { authenticationActions as authentication } from "./authentication.actions";
-import { alertActions as alert } from "./alert.actions";
+import { authenticationActions as authentication } from "../_actions/authentication.actions";
+import { alertActions as alert } from "../_actions/alert.actions";
 
 import store from "../_store";
 

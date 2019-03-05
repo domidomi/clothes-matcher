@@ -3,10 +3,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import {
-  logIn as logInAction,
-  logOut as logOutAction
-} from "../../actions/authentication.actions";
+import * as auth from "../../utils/Auth";
 
 class Login extends Component {
   handleSubmit(e) {
@@ -14,7 +11,7 @@ class Login extends Component {
   }
 
   render() {
-    const { logIn, logOut, isLoggedIn } = this.props;
+    const { isLoggedIn } = this.props;
 
     return (
       <div>
@@ -29,13 +26,13 @@ class Login extends Component {
             <input type="password" className="form-control" name="password" />
           </div>
           <div className="form-group">
-            <button className="btn btn-primary" onClick={() => logIn()}>
+            <button className="btn btn-primary" onClick={() => auth.login()}>
               Login
             </button>
 
-            <Link to="/register" className="btn btn-link">
+            {/* <Link to="/register" className="btn btn-link">
               Register
-            </Link>
+            </Link> */}
           </div>
         </form>
       </div>
@@ -44,21 +41,14 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
-  logIn: PropTypes.func,
-  logOut: PropTypes.func
+  isLoggedIn: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
   isLoggedIn: state.authentication.isLoggedIn
 });
 
-const mapDispatchToProps = {
-  logIn: logInAction,
-  logOut: logOutAction
-};
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  {}
 )(Login);

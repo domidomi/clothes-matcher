@@ -1,13 +1,11 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import { Redirect } from "react-router-dom";
 
-import { logOut as logOutAction } from "../../actions/authentication.actions";
+import * as auth from "../../utils/Auth";
 
 class Logout extends Component {
   componentWillMount() {
-    this.props.logOut();
+    auth.logout();
   }
 
   render() {
@@ -15,15 +13,4 @@ class Logout extends Component {
   }
 }
 
-Logout.propTypes = {
-  logOut: PropTypes.func
-};
-
-const mapDispatchToProps = {
-  logOut: logOutAction
-};
-
-export default connect(
-  {},
-  mapDispatchToProps
-)(Logout);
+export default Logout;

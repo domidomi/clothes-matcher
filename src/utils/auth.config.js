@@ -4,7 +4,7 @@ const config = {
     responseType: "token id_token",
     audience: "https://domidomi.eu.auth0.com/userinfo", // e.g., https://joel-1.auth0.com/userinfo
     scope: "openid profile",
-    redirectUri: `${window.location.protocol}//${window.location.hostname}:${window.location.port}${window.location.pathname}callback`
+    redirectUri: `${window.location.protocol}//${window.location.hostname}:${window.location.port}/callback`
   };
   
   export default config;

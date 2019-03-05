@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 import { history } from "../../utils/helpers";
-import { Homepage, Login, Logout } from "../../pages";
+import { Homepage, Login, Logout, Callback } from "../../pages";
 import { Toolbar } from "../../components";
 
 import { alertActions as alert } from "../../_actions/alert.actions";
@@ -29,9 +29,9 @@ class App extends Component {
           <Toolbar isLoggedIn={isLoggedIn} />
           {isLoggedIn ? "logged in" : "not logged in"}
           <div className="container">
-            {alert.message && (
+            {/* {alert.message && (
               <div className={`alert ${alert.type}`}>{alert.message}</div>
-            )}
+            )} */}
             <Route
               exact
               path="/"
