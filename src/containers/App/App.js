@@ -3,21 +3,40 @@ import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
+import { history } from "../../utils/helpers";
 import { Homepage, Login, Logout } from "../../pages";
 import { Toolbar } from "../../components";
 
 import "./App.scss";
 
 class App extends Component {
+  componentDidMount() {
+    const { dispatch } = this.props;
+    history.listen((location, action) => {
+      // clear alert on location change
+      dispatch(alertActions.clear());
+    });
+  }
+
   render() {
-    const { isLoggedIn } = this.props;
+    const { isLoggedIn, alert } = this.props;
+
     return (
       <Router>
         <div className="app">
           <Toolbar isLoggedIn={isLoggedIn} />
           {isLoggedIn ? "logged in" : "not logged in"}
           <div className="container">
-            <Route exact path="/" component={Homepage} />
+            {alert.message && (
+              <div className={`alert ${alert.type}`}>{alert.message}</div>
+            )}
+            <Route
+              exact
+              path="/"
+              render={props => <Homepage {...this.props} />}
+            />
+            <Route path="/callback" component={Callback} />
+
             {isLoggedIn && <Route exact path="/logout" component={Logout} />}
 
             {!isLoggedIn && <Route exact path="/login" component={Login} />}
@@ -34,7 +53,8 @@ App.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  isLoggedIn: state.authentication.isLoggedIn
+  isLoggedIn: state.authentication.isLoggedIn,
+  alert: state.alert
 });
 
 export default connect(

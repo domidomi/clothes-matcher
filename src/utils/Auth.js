@@ -2,6 +2,7 @@ import Auth0 from "auth0-js";
 import AUTH0_CONFIG from "./auth.config";
 
 import { authenticationActions as authentication } from "./authentication.actions";
+import { alertActions as alert } from "./alert.actions";
 
 import store from "../_store";
 
@@ -28,6 +29,7 @@ export function logout() {
   tokenStorage.removeItem("expires_at");
 
   store.dispatch(authentication.logOut());
+  store.dispatch(alert.success("You are now logged out."));
 }
 
 export function handleAuth() {
@@ -36,6 +38,7 @@ export function handleAuth() {
       window.location.hash = "";
       getProfile(authResult);
     } else if (err) {
+      store.dispatch(alert.error("Something went wrong."));
       console.error(`Error: ${err.error}`);
     }
   });
@@ -56,4 +59,5 @@ function setSession(authResult, profile) {
   tokenStorage.setItem("expires_at", JSON.stringify(expTime));
 
   store.dispatch(authentication.logIn(profile));
+  store.dispatch(alert.success("You are now logged in."));
 }
