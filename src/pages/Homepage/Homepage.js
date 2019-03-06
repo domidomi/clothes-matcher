@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import * as auth from "../../utils/Auth";
 
 class Homepage extends Component {
   render() {
@@ -14,7 +13,7 @@ class Homepage extends Component {
 
             <a
               style={{ cursor: 'pointer' }}
-              onClick={auth.logout}
+              onClick={() => this.props.auth.logout()}
             >
               Log out
             </a>
@@ -27,7 +26,7 @@ class Homepage extends Component {
             You are not logged in! Please{' '}
             <a
               style={{ cursor: 'pointer' }}
-              onClick={auth.login}
+              onClick={() => this.props.auth.login()}
             >
               Log In
             </a>

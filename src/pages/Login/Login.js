@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import * as auth from "../../utils/Auth";
-
 class Login extends Component {
   handleSubmit(e) {
     e.preventDefault();
@@ -26,7 +24,10 @@ class Login extends Component {
             <input type="password" className="form-control" name="password" />
           </div>
           <div className="form-group">
-            <button className="btn btn-primary" onClick={() => auth.login()}>
+            <button
+              className="btn btn-primary"
+              onClick={() => this.props.auth.login()}
+            >
               Login
             </button>
 

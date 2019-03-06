@@ -1,59 +1,99 @@
-import Auth0 from "auth0-js";
-import AUTH0_CONFIG from "./auth.config";
+import history from "./history";
+import auth0 from "auth0-js";
+import AUTH_CONFIG from "./auth.config";
 
-const auth0 = new Auth0.WebAuth(AUTH0_CONFIG);
+export default class Auth {
+  accessToken;
+  idToken;
+  expiresAt;
 
-// To avoid using localStorage for the JWT, let's use 
-// in memory storage
+  auth0 = new auth0.WebAuth({
+    domain: AUTH_CONFIG.domain,
+    clientID: AUTH_CONFIG.clientId,
+    redirectUri: AUTH_CONFIG.callbackUrl,
+    responseType: "token id_token",
+    scope: "openid"
+  });
 
-const tokenStorage = {
-  tokens: {},
-  setItem: (key, value) => this.token[key] = value,
-  getItem: (key) => this.token[key],
-  removeItem: (key) => this.token[key] = undefined
-};
-
-export function login() {
-  auth0.authorize();
-}
-
-export function logout() {
-  if (tokenStorage.getItem("token")) {
-    tokenStorage.removeItem("token");
-    tokenStorage.removeItem("id_token");
-    tokenStorage.removeItem("profile");
-    tokenStorage.removeItem("expires_at");
+  constructor() {
+    this.login = this.login.bind(this);
+    this.logout = this.logout.bind(this);
+    this.handleAuthentication = this.handleAuthentication.bind(this);
+    this.isAuthenticated = this.isAuthenticated.bind(this);
+    this.getAccessToken = this.getAccessToken.bind(this);
+    this.getIdToken = this.getIdToken.bind(this);
+    this.renewSession = this.renewSession.bind(this);
   }
-  window.setState({ isLoggedIn: false, profile: undefined });
-}
 
-export function handleAuth() {
-  auth0.parseHash((err, authResult) => {
-    if (authResult && authResult.accessToken && authResult.idToken) {
-      window.location.hash = "";
-      getProfile(authResult);
-    } else if (err) {
-      console.error(`Error: ${err.error}`);
-    }
-  });
-}
+  login() {
+    this.auth0.authorize();
+  }
 
-function getProfile(authResult) {
-  auth0.client.userInfo(authResult.accessToken, (err, profile) => {
-    setSession(authResult, profile);
-    localStorage.setItem('access_token', authResult.accessToken); 
-		console.log('TCL: getProfile -> authResult', authResult)
-		console.log('TCL: getProfile -> profile', profile)
+  handleAuthentication() {
+    this.auth0.parseHash((err, authResult) => {
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        this.setSession(authResult);
+      } else if (err) {
+        history.replace("/homepage");
+        console.log(err);
+        alert(`Error: ${err.error}. Check the console for further details.`);
+      }
+    });
+  }
 
-  });
-}
+  getAccessToken() {
+    return this.accessToken;
+  }
 
-function setSession(authResult, profile) {
-  const expTime = authResult.expiresIn * 1000 + Date.now();
-  // Save session data and update login status subject
-  tokenStorage.setItem("token", authResult.accessToken);
-  tokenStorage.setItem("id_token", authResult.idToken);
-  tokenStorage.setItem("profile", JSON.stringify(profile));
-  tokenStorage.setItem("expires_at", JSON.stringify(expTime));
-  window.setState({ isLoggedIn: true, profile });
+  getIdToken() {
+    return this.idToken;
+  }
+
+  setSession(authResult) {
+    // Set isLoggedIn flag in localStorage
+    localStorage.setItem("isLoggedIn", "true");
+
+    // Set the time that the access token will expire at
+    let expiresAt = authResult.expiresIn * 1000 + new Date().getTime();
+    this.accessToken = authResult.accessToken;
+    this.idToken = authResult.idToken;
+    this.expiresAt = expiresAt;
+
+    // navigate to the home route
+    history.replace("/homepage");
+  }
+
+  renewSession() {
+    this.auth0.checkSession({}, (err, authResult) => {
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        this.setSession(authResult);
+      } else if (err) {
+        this.logout();
+        console.log(err);
+        alert(
+          `Could not get a new token (${err.error}: ${err.error_description}).`
+        );
+      }
+    });
+  }
+
+  logout() {
+    // Remove tokens and expiry time
+    this.accessToken = null;
+    this.idToken = null;
+    this.expiresAt = 0;
+
+    // Remove isLoggedIn flag from localStorage
+    localStorage.removeItem("isLoggedIn");
+
+    // navigate to the home route
+    history.replace("/homepage");
+  }
+
+  isAuthenticated() {
+    // Check whether the current time is past the
+    // access token's expiry time
+    let expiresAt = this.expiresAt;
+    return new Date().getTime() < expiresAt;
+  }
 }

@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import { Router, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import { history } from "../../utils/helpers";
 import { Homepage, Login, Logout, Callback } from "../../pages";
 import { Toolbar } from "../../components";
 
@@ -20,32 +19,94 @@ class App extends Component {
   //   });
   // }
 
+  goTo(route) {
+    this.props.history.replace(`/${route}`);
+  }
+
+  login() {
+    this.props.auth.login();
+  }
+
+  logout() {
+    this.props.auth.logout();
+  }
+
+  componentDidMount() {
+    const { renewSession } = this.props.auth;
+
+    if (localStorage.getItem("isLoggedIn") === "true") {
+      renewSession();
+    }
+  }
+
   render() {
     const { isLoggedIn, profile, alert } = this.props;
-    console.log("TCL: App -> render -> profile", profile);
-    console.log("TCL: App -> render -> isLoggedIn", isLoggedIn);
 
+    const { isAuthenticated } = this.props.auth;
     return (
-      <Router>
-        <div className="app">
-          <Toolbar isLoggedIn={isLoggedIn} />
-          {isLoggedIn ? "logged in" : "not logged in"}
-          <div className="container">
-            <Route
-              exact
-              path="/"
-              render={props => <Homepage {...this.props} />}
-            />
-            <Route path="/callback" component={Callback} />
+      // <Router history={history}>
+      //   <div className="app">
+      //     <Toolbar isLoggedIn={isAuthenticated()} auth={auth} {...this.props} />
+      //     {isAuthenticated() ? "logged in" : "not logged in"}
+      //     <div className="container">
+      //       <Route
+      //         exact
+      //         path="/"
+      //         render={props => <Homepage auth={auth} {...this.props} />}
+      //       />
+      //       <Route
+      //         path="/callback"
+      //         render={props => {
+      //           handleAuthentication(props);
+      //           return <Callback {...props} />;
+      //         }}
+      //       />
 
-            {isLoggedIn && <Route exact path="/logout" component={Logout} />}
-            <Route exact path="/logout" component={Logout} />
+      //       {isAuthenticated() && (
+      //         <Route
+      //           exact
+      //           path="/logout"
+      //           render={props => <Logout auth={auth} {...this.props} />}
+      //         />
+      //       )}
 
-            {!isLoggedIn && <Route exact path="/login" component={Login} />}
-            {/* <Redirect to="/" /> */}
-          </div>
+      //       {!isAuthenticated() && (
+      //         <Route
+      //           exact
+      //           path="/login"
+      //           render={props => <Login auth={auth} {...this.props} />}
+      //         />
+      //       )}
+      //     </div>
+      //   </div>
+      // </Router>
+
+      <div className="app">
+        <Toolbar isLoggedIn={isAuthenticated()} />
+        {isAuthenticated() ? "logged in" : "not logged in"}
+        <div className="container">
+          {!isAuthenticated() && (
+            <button
+              id="qsLoginBtn"
+              bsStyle="primary"
+              className="btn-margin"
+              onClick={this.login.bind(this)}
+            >
+              Log In
+            </button>
+          )}
+          {isAuthenticated() && (
+            <button
+              id="qsLogoutBtn"
+              bsStyle="primary"
+              className="btn-margin"
+              onClick={this.logout.bind(this)}
+            >
+              Log Out
+            </button>
+          )}
         </div>
-      </Router>
+      </div>
     );
   }
 }
