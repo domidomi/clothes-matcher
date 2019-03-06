@@ -7,57 +7,42 @@ import { history } from "../../utils/helpers";
 import { Homepage, Login, Logout, Callback } from "../../pages";
 import { Toolbar } from "../../components";
 
-import Auth from "../../utils/Auth";
 import { alertActions as alert } from "../../_actions/alert.actions";
 
 import "./App.scss";
 
-const auth = new Auth();
-
-const handleAuthentication = ({ location }) => {
-  if (/access_token|id_token|error/.test(location.hash)) {
-    auth.handleAuthentication();
-  }
-};
 class App extends Component {
-  componentDidMount() {
-    const { dispatch } = this.props;
-    history.listen((location, action) => {
-      // clear alert on location change
-      dispatch(alert.clear());
-    });
-  }
+  // componentDidMount() {
+  //   const { dispatch } = this.props;
+  //   history.listen((location, action) => {
+  //     // clear alert on location change
+  //     dispatch(alert.clear());
+  //   });
+  // }
 
   render() {
-    const { isLoggedIn, alert } = this.props;
+    const { isLoggedIn, profile, alert } = this.props;
+    console.log("TCL: App -> render -> profile", profile);
+    console.log("TCL: App -> render -> isLoggedIn", isLoggedIn);
 
     return (
-      <Router history={history}>
+      <Router>
         <div className="app">
           <Toolbar isLoggedIn={isLoggedIn} />
           {isLoggedIn ? "logged in" : "not logged in"}
           <div className="container">
-            {/* {alert.message && (
-              <div className={`alert ${alert.type}`}>{alert.message}</div>
-            )} */}
             <Route
               exact
               path="/"
-              render={props => <Homepage auth={auth} {...this.props} />}
+              render={props => <Homepage {...this.props} />}
             />
-            <Route
-              path="/callback"
-              render={props => {
-                handleAuthentication(props);
-                return <Callback {...props} />;
-              }}
-            />
+            <Route path="/callback" component={Callback} />
 
             {isLoggedIn && <Route exact path="/logout" component={Logout} />}
             <Route exact path="/logout" component={Logout} />
 
             {!isLoggedIn && <Route exact path="/login" component={Login} />}
-            <Redirect to="/" />
+            {/* <Redirect to="/" /> */}
           </div>
         </div>
       </Router>
@@ -65,16 +50,18 @@ class App extends Component {
   }
 }
 
-App.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired
-};
+// App.propTypes = {
+//   isLoggedIn: PropTypes.bool.isRequired
+// };
 
-const mapStateToProps = state => ({
-  isLoggedIn: state.authentication.isLoggedIn,
-  alert: state.alert
-});
+// const mapStateToProps = state => ({
+//   isLoggedIn: state.authentication.isLoggedIn,
+//   alert: state.alert
+// });
 
-export default connect(
-  mapStateToProps,
-  {}
-)(App);
+// export default connect(
+//   mapStateToProps,
+//   {}
+// )(App);
+
+export default App;

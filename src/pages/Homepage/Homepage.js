@@ -1,29 +1,33 @@
 import React, { Component } from "react";
+import * as auth from "../../utils/Auth";
 
 class Homepage extends Component {
-  login() {
-    this.props.auth.login();
-  }
-
   render() {
-    const { isAuthenticated } = this.props.auth;
+    const { isLoggedIn } = this.props;
     
     return <div>Homepage
 
     {
-      isAuthenticated() && (
+      isLoggedIn && (
           <h4>
             You are logged in!
+
+            <a
+              style={{ cursor: 'pointer' }}
+              onClick={auth.logout}
+            >
+              Log out
+            </a>
           </h4>
         )
     }
     {
-      !isAuthenticated() && (
+      !isLoggedIn && (
           <h4>
             You are not logged in! Please{' '}
             <a
               style={{ cursor: 'pointer' }}
-              onClick={this.login.bind(this)}
+              onClick={auth.login}
             >
               Log In
             </a>

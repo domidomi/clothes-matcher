@@ -26,10 +26,7 @@ class Login extends Component {
             <input type="password" className="form-control" name="password" />
           </div>
           <div className="form-group">
-            <button
-              className="btn btn-primary"
-              onClick={() => this.props.auth.login()}
-            >
+            <button className="btn btn-primary" onClick={() => auth.login()}>
               Login
             </button>
 
@@ -43,15 +40,17 @@ class Login extends Component {
   }
 }
 
-Login.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired
-};
+// Login.propTypes = {
+//   isLoggedIn: PropTypes.bool.isRequired
+// };
 
-const mapStateToProps = state => ({
-  isLoggedIn: state.authentication.isLoggedIn
-});
+// const mapStateToProps = state => ({
+//   isLoggedIn: state.authentication.isLoggedIn
+// });
 
-export default connect(
-  mapStateToProps,
-  {}
-)(Login);
+// export default connect(
+//   mapStateToProps,
+//   {}
+// )(Login);
+
+export default Login;
