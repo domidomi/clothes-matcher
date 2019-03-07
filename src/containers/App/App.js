@@ -15,39 +15,30 @@ class App extends Component {
   //   });
   // }
 
-  goTo(route) {
-    this.props.history.replace(`/${route}`);
-  }
-
-  login() {
-    this.props.auth.login();
-  }
-
-  logout() {
-    this.props.auth.logout();
-  }
-
   render() {
-    const { isAuthenticated } = this.props.auth;
+    const { auth } = this.props;
+
+    const isAuthenticated = auth.isAuthenticated() || false;
+
     return (
       <div>
         <h4>You have to log in to browse the app</h4>
-        {!isAuthenticated() && (
+        {!isAuthenticated && (
           <button
             id="qsLoginBtn"
             bsStyle="primary"
             className="btn-margin"
-            onClick={this.login.bind(this)}
+            onClick={() => auth.login()}
           >
             Log In
           </button>
         )}
-        {isAuthenticated() && (
+        {isAuthenticated && (
           <button
             id="qsLogoutBtn"
             bsStyle="primary"
             className="btn-margin"
-            onClick={this.logout.bind(this)}
+            onClick={() => auth.logout()}
           >
             Log Out
           </button>
@@ -69,6 +60,26 @@ class App extends Component {
 // export default connect(
 //   mapStateToProps,
 //   {}
+// )(App);
+
+// App.propTypes = {
+//   isAuthenticated: PropTypes.bool,
+//   auth: PropTypes.object
+// };
+
+// const mapStateToProps = state => ({
+//   isAuthenticated: state.authentication.isAuthenticated,
+//   auth: state.authentication.auth
+// });
+
+// const mapDispatchToProps = {
+//   logIn: authentication.logIn,
+//   logOut: authentication.logOut
+// };
+
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps
 // )(App);
 
 export default App;
