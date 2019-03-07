@@ -8,6 +8,8 @@ import { Toolbar } from "../../components";
 import Auth from "../../utils/Auth";
 import history from "../../utils/history";
 
+import './App.scss';
+
 const auth = new Auth();
 
 const handleAuthentication = ({ location }) => {
