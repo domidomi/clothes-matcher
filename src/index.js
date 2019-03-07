@@ -3,8 +3,6 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import store from "./_store";
 
-import { makeMainRoutes } from "./routes";
+import App from "./containers/App/App";
 
-const routes = makeMainRoutes();
-
-ReactDOM.render(routes, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById("root"));
