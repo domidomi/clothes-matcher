@@ -17,12 +17,22 @@ const handleAuthentication = ({ location }) => {
 };
 
 export const makeMainRoutes = () => {
+  const { renewSession } = auth;
+
+  if (localStorage.getItem("isLoggedIn") === "true") {
+    renewSession();
+  }
+
   return (
     <Router history={history}>
       <div className="app">
         <Toolbar auth={auth} />
         <div className="container">
-          <Route exact path="/" render={props => <App auth={auth} {...props} />} />
+          <Route
+            exact
+            path="/"
+            render={props => <App auth={auth} {...props} />}
+          />
           <Route
             path="/homepage"
             render={props => <Homepage auth={auth} {...props} />}

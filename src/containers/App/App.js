@@ -1,10 +1,6 @@
 import React, { Component } from "react";
-import { Router, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-
-import { Homepage, Login, Callback } from "../../pages";
-import { Toolbar } from "../../components";
 
 import { alertActions as alert } from "../../_actions/alert.actions";
 
@@ -31,17 +27,7 @@ class App extends Component {
     this.props.auth.logout();
   }
 
-  componentDidMount() {
-    const { renewSession } = this.props.auth;
-
-    if (localStorage.getItem("isLoggedIn") === "true") {
-      renewSession();
-    }
-  }
-
   render() {
-    const { isLoggedIn, profile, alert } = this.props;
-
     const { isAuthenticated } = this.props.auth;
     return (
       <div>

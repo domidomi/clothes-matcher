@@ -9,11 +9,13 @@ class Login extends Component {
   }
 
   render() {
-    const { isLoggedIn } = this.props;
+    const { auth } = this.props;
+
+    const isAuthenticated = auth.isAuthenticated() || false;
 
     return (
       <div>
-        Is logged? {isLoggedIn ? "yes" : "no"}
+        Is logged? {isAuthenticated ? "yes" : "no"}
         <form name="form" onSubmit={this.handleSubmit}>
           <div className={"form-group"}>
             <label htmlFor="username">Username</label>
