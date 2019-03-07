@@ -6,24 +6,26 @@ import "./Toolbar.scss";
 
 class Toolbar extends Component {
   render() {
-    const { isLoggedIn } = this.props;
+    const { auth } = this.props;
+
+    const isAuthenticated = auth.isAuthenticated();
 
     return (
       <div className="toolbar">
         <ul>
           <div className="toolbar__links">
             <li>
-              <Link to="/">Home</Link>
+              <Link to="/homepage">Home</Link>
             </li>
             <li>
               <Link to="/browse">Browse</Link>
             </li>
-            {isLoggedIn && (
+            {isAuthenticated && (
               <li>
                 <Link to="/items/my">My items</Link>
               </li>
             )}
-            {isLoggedIn && (
+            {isAuthenticated && (
               <li>
                 <Link to="/sets/my">My sets</Link>
               </li>
@@ -31,25 +33,23 @@ class Toolbar extends Component {
           </div>
 
           <div className="toolbar__links">
-            {!isLoggedIn && (
+            {!isAuthenticated && (
               <li>
                 <Link to="/login">Login</Link>
               </li>
             )}
-            {isLoggedIn && (
+            {isAuthenticated && (
               <li>
                 <Link to="/profile">Profile</Link>
               </li>
             )}
-            {/* {isLoggedIn && (
+            {isAuthenticated && (
               <li>
-                <Link to="/logout">Log out</Link>
+                <Link to="/" onClick={() => auth.logout()}>
+                  Log out
+                </Link>
               </li>
-            )} */}
-
-            <li>
-              <Link to="/logout">Log out</Link>
-            </li>
+            )}
           </div>
         </ul>
       </div>
