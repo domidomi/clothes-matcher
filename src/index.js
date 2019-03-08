@@ -5,4 +5,9 @@ import store from "./_store";
 
 import App from "./containers/App/App";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById("root")
+);

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Route, Router } from "react-router-dom";
+import PropTypes from "prop-types";
 
+import { connect } from "react-redux";
 import { Homepage, Callback, Login } from "../../pages";
 import { Toolbar } from "../../components";
 
@@ -20,11 +22,13 @@ const handleAuthentication = ({ location }) => {
 
 class App extends Component {
   render() {
+  componentDidMount() {
     const { renewSession } = auth;
 
     if (localStorage.getItem("isLoggedIn") === "true") {
       renewSession();
     }
+  }
 
     history.listen((location, action) => {
       // clear alert on location change
@@ -45,10 +49,8 @@ class App extends Component {
             />
             <Route
               path="/callback"
-              render={props => {
-                handleAuthentication(props);
-                return <Callback {...props} />;
-              }}
+              exact
+              render={props => <Callback {...props} auth={auth} />}
             />
             <Route
               path="/login"
@@ -61,4 +63,11 @@ class App extends Component {
   }
 }
 
-export default App;
+App.propTypes = {
+};
+
+
+export default connect(
+  mapStateToProps,
+  {}
+)(App);
