@@ -1,9 +1,10 @@
-@import './src/assets/styles/colors.scss';
+@import "./src/assets/styles/colors.scss";
 
 .app {
   font-family: sans-serif;
   display: flex;
   flex-direction: column;
+  background-color: $paper;
 }
 
 .container {

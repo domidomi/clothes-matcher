@@ -1,6 +1,9 @@
+background-color: $paper;
+@import './src/assets/styles/colors.scss';
+
 .toolbar {
   font-size: 14px;
-  background-color: #fff;
+  background-color: $white;
   display: flex;
   width: 100%;
 }
