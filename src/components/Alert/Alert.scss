@@ -1,0 +1,27 @@
+@import './src/assets/styles/colors.scss';
+
+.alert {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  width: 260px;
+  z-index: 999;
+  padding: 20px 15px;
+
+  box-shadow: 0 0 15px rgba($black, 0.2);
+  background-color: $white;
+  border: 1px solid $gray-medium;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 14px;
+
+  &.alert-success {
+    border-color: $green-success;
+  }
+
+  &.alert-danger {
+    border-color: $red-danger;
+  }
+}
+
+

@@ -4,13 +4,15 @@ import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
 import { Homepage, Callback, Login } from "../../pages";
-import { Toolbar } from "../../components";
+import { Alert, Toolbar } from "../../components";
 
 // import App from "./containers/App/App";
 import Auth from "../../utils/Auth";
 import history from "../../utils/history";
 
-import './App.scss';
+import { alertActions } from "../../_actions";
+
+import "./App.scss";
 
 const auth = new Auth();
 
@@ -21,7 +23,6 @@ const handleAuthentication = ({ location }) => {
 };
 
 class App extends Component {
-  render() {
   componentDidMount() {
     const { renewSession } = auth;
 
@@ -30,19 +31,15 @@ class App extends Component {
     }
   }
 
-    history.listen((location, action) => {
-      // clear alert on location change
-      // dispatch(alert.clear());
-
-      console.log("something in history changed");
-    });
+  render() {
+    const { alertMessage, alertType } = this.props;
 
     return (
       <Router history={history}>
         <div className="app">
+          {alertMessage && <Alert message={alertMessage} type={alertType} />}
           <Toolbar auth={auth} />
           <div className="container">
-            
             <Route
               path="/"
               render={props => <Homepage auth={auth} {...props} />}
@@ -66,6 +63,10 @@ class App extends Component {
 App.propTypes = {
 };
 
+const mapStateToProps = state => ({
+  alertType: state.alert.type,
+  alertMessage: state.alert.message
+});
 
 export default connect(
   mapStateToProps,

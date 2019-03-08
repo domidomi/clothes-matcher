@@ -1,7 +1,8 @@
 import history from "./history";
 import auth0 from "auth0-js";
 import AUTH_CONFIG from "./auth.config";
-
+import { alertActions } from "../_actions/alert.actions";
+import store from "../_store";
 export default class Auth {
   accessToken;
   idToken;
@@ -34,6 +35,7 @@ export default class Auth {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
       } else if (err) {
+        store.dispatch(alertActions.error("Something went wrong."));
         history.replace("/");
         console.log(err);
         alert(`Error: ${err.error}. Check the console for further details.`);
@@ -52,7 +54,7 @@ export default class Auth {
   setSession(authResult) {
     // Set isLoggedIn flag in localStorage
     localStorage.setItem("isLoggedIn", "true");
-
+    store.dispatch(alertActions.success("Login successful"));
     // Set the time that the access token will expire at
     let expiresAt = authResult.expiresIn * 1000 + new Date().getTime();
     this.accessToken = authResult.accessToken;
@@ -85,7 +87,7 @@ export default class Auth {
 
     // Remove isLoggedIn flag from localStorage
     localStorage.removeItem("isLoggedIn");
-
+    store.dispatch(alertActions.info("You were logged out."));
     // navigate to the home route
     history.replace("/");
   }
