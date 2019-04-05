@@ -1,74 +1,71 @@
-import React, { Component } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Route, Router } from "react-router-dom";
-import PropTypes from "prop-types";
 
-import { connect } from "react-redux";
-import { Homepage, Callback, Login } from "../../pages";
+import { Homepage, Login } from "../../pages";
 import { Alert, Toolbar } from "../../components";
 
-// import App from "./containers/App/App";
-import Auth from "../../utils/Auth";
 import history from "../../utils/history";
-
+import { useSelectors } from "use-redux";
 import { alertActions } from "../../_actions";
+
+import { FirebaseContext } from "../../utils/Firebase";
+import * as APIcalls from "../../utils/APIcalls";
 
 import "./App.scss";
 
-const auth = new Auth();
+// Some selectors
+const alertSelector = state => state.alert;
 
-const handleAuthentication = ({ location }) => {
-  if (/access_token|id_token|error/.test(location.hash)) {
-    auth.handleAuthentication();
-  }
-};
+const App = () => {
+  const [user, setUser] = useState();
+  const [alert] = useSelectors(alertSelector);
 
-class App extends Component {
-  componentDidMount() {
-    const { renewSession } = auth;
+  const firebase = useContext(FirebaseContext);
 
-    if (localStorage.getItem("isLoggedIn") === "true") {
-      renewSession();
-    }
-  }
+  useEffect(() => {
+    const unsubscribe = firebase.authRef.onAuthStateChanged(async user => {
+      const userData = user
+        ? await APIcalls.fetchUserData(firebase, user)
+        : null;
 
-  render() {
-    const { alertMessage, alertType } = this.props;
+      if (userData) {
+        setUser(userData);
+      } else {
+        setUser(null);
+      }
+    });
 
-    return (
-      <Router history={history}>
-        <div className="app">
-          {alertMessage && <Alert message={alertMessage} type={alertType} />}
-          <Toolbar auth={auth} />
-          <div className="container">
-            <Route
-              path="/"
-              render={props => <Homepage auth={auth} {...props} />}
-            />
-            <Route
-              path="/callback"
-              exact
-              render={props => <Callback {...props} auth={auth} />}
-            />
-            <Route
-              path="/login"
-              render={props => <Login auth={auth} {...props} />}
-            />
-          </div>
+    return () => {
+      // Stop listening to changes
+      unsubscribe();
+    };
+  }, []);
+
+  return (
+    <Router history={history}>
+      <div className="app">
+        {user && <h2>User is: {user.name}</h2>}
+        {user && console.log(user)}
+        {alert && <Alert message={alert.message} type={alert.type} />}
+        {/* <Toolbar auth={null} /> */}
+        <div className="container">
+          {/* <Route
+            path="/"
+            render={props => <Homepage auth={null} {...props} />}
+          />
+          <Route
+            path="/callback"
+            exact
+            render={props => <Callback {...props} auth={null} />}
+          />
+          <Route
+            path="/login"
+            render={props => <Login auth={null} {...props} />}
+          /> */}
         </div>
-      </Router>
-    );
-  }
-}
-
-App.propTypes = {
+      </div>
+    </Router>
+  );
 };
 
-const mapStateToProps = state => ({
-  alertType: state.alert.type,
-  alertMessage: state.alert.message
-});
-
-export default connect(
-  mapStateToProps,
-  {}
-)(App);
+export default App;

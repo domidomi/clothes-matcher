@@ -1,13 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
+import { ReduxProvider } from "use-redux";
+import Firebase, { FirebaseContext } from "./utils/Firebase";
 import store from "./_store";
 
-import App from "./containers/App/App";
+import { App } from "./containers";
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <ReduxProvider store={store}>
+    <FirebaseContext.Provider value={new Firebase()}>
+      <App />
+    </FirebaseContext.Provider>
+  </ReduxProvider>,
   document.getElementById("root")
 );
