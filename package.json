@@ -5,14 +5,16 @@
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
-    "auth0-js": "^9.10.0",
-    "node-sass": "4.11.0",
-    "react": "16.8.3",
-    "react-dom": "16.8.3",
-    "react-redux": "6.0.1",
-    "react-router-dom": "4.3.1",
+    "firebase": "^5.9.3",
+    "node-sass": "^4.11.0",
+    "react": "^16.8.3",
+    "react-dom": "^16.8.3",
+    "react-redux": "^6.0.1",
+    "react-router-dom": "^4.3.1",
     "react-scripts": "2.0.3",
-    "redux": "4.0.1"
+    "redux": "^4.0.1",
+    "semantic-ui-react": "^0.86.0",
+    "use-redux": "^2.2.0"
   },
   "devDependencies": {},
   "scripts": {
